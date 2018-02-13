@@ -8,6 +8,8 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {red500} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import AutoComplete from 'material-ui/AutoComplete';
+import { withRouter } from 'react-router-dom';
 
 
 class Login extends Component {
@@ -18,10 +20,6 @@ class Login extends Component {
       <FlatButton {...this.props} label="Login" />
     );
   }
-}
-
-function handleClick() {
-  alert('onClick triggered on the title component');
 }
 
 const muiTheme = getMuiTheme({
@@ -69,18 +67,37 @@ class App extends Component {
     this.setState({logged: logged});
   };
 
+  state = {
+    dataSource: [],
+  };
+
+  handleUpdateInput = (value) => {
+    this.setState({
+      dataSource: [
+        value,
+      ],
+    });
+  };
+
   render() {
+    debugger;
     return (
     <MuiThemeProvider muiTheme={muiTheme}>
       <div>
         <AppBar
           iconElementRight={this.state.logged ? <Logged /> : <Login />}
           title={<span style={styles.title}>Search</span>}
+          onLeftIconButtonClick ={this.handleClick}
         />
+        <AutoComplete
+          hintText="Type anything"
+          dataSource={this.state.dataSource}
+          onUpdateInput={this.handleUpdateInput}
+        />      
       </div>
     </MuiThemeProvider>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
