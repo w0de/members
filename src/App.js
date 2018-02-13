@@ -1,41 +1,86 @@
-import React, { Component } from "react";
-import { Route, Link } from "react-router-dom";
-import MemberResources from "./MemberResources";
-import Login from "./Login";
-import MemberProfile from "./MemberProfile";
-import MemberProfileEdit from "./MemberProfileEdit";
+import React, {Component} from 'react';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import EmailList from "./EmailList";
-import "./App.css";
-import { componentWithLoggedInUser } from './utils';
-import UsersList from "./UsersList";
+import {red500} from 'material-ui/styles/colors';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 
-class App extends Component {
+class Login extends Component {
+  static muiName = 'FlatButton';
+
   render() {
-    const { User } = this.props.data || {};
     return (
-      <MuiThemeProvider>
-        <div className="App">
-          <div className="App-header">
-            <a href="/">
-              <img className="cfd-logo" src="images/cfd-circle-white.png" alt="code for denver logo"/>
-            </a>
-            <Login user={User} />
-            <Link className="nav-link" to="/volunteers">All Users</Link>
-          </div>
-          <Route exact path="/" component={MemberResources} />
-          <Route
-            exact path="/me"
-            render={() => <MemberProfile user={User} />}
-          />
-          <Route exact path="/me/edit" component={MemberProfileEdit} />
-          <Route exact path="/admin/onboarding" component={EmailList} />
-          <Route exact path="/volunteers" component={UsersList} />
-        </div>
-      </MuiThemeProvider>
+      <FlatButton {...this.props} label="Login" />
     );
   }
 }
 
-export default componentWithLoggedInUser(App);
+function handleClick() {
+  alert('onClick triggered on the title component');
+}
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color:red500,
+    onTitleClick:{handleClick}
+
+  },
+});
+
+const styles = {
+  title: {
+    cursor: 'pointer',
+  },
+};
+
+const Logged = (props) => (
+  <IconMenu
+    {...props}
+    iconButtonElement={
+      <IconButton><MoreVertIcon /></IconButton>
+    }
+    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+  >
+    <MenuItem primaryText="My Profile" />
+    <MenuItem primaryText="Edit Profile" />
+    <MenuItem primaryText="Sign out" />
+  </IconMenu>
+);
+
+
+Logged.muiName = 'IconMenu';
+
+/**
+ * This example is taking advantage of the composability of the `AppBar`
+ * to render different components depending on the application state.
+ */
+class App extends Component {
+  state = {
+    logged: true,
+  };
+
+  handleChange = (event, logged) => {
+    this.setState({logged: logged});
+  };
+
+  render() {
+    return (
+    <MuiThemeProvider muiTheme={muiTheme}>
+      <div>
+        <AppBar
+          iconElementRight={this.state.logged ? <Logged /> : <Login />}
+          title={<span style={styles.title}>Search</span>}
+        />
+      </div>
+    </MuiThemeProvider>
+    );
+  }
+}
+
+export default App;

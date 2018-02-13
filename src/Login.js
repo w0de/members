@@ -3,6 +3,8 @@ import { Link, withRouter } from "react-router-dom";
 import LoginAuth0 from "./LoginAuth0";
 import { logout } from './Auth';
 import { getEnvironmentVariables } from "./utils";
+import AppBar from 'material-ui/AppBar';
+
 
 const env = getEnvironmentVariables();
 
@@ -27,9 +29,17 @@ class Login extends Component {
         />
       );
     } else {
+      var title= "Hello " + this.props.user.name;
       return (
-        <div>
-          <button onClick={this._logout}>Log out</button>
+        <AppBar
+          title= {title}
+        />
+
+
+
+
+
+        /**<div className = "loggedin">
           <span>
             Hello, {this.props.user.name}
           </span>
@@ -41,7 +51,10 @@ class Login extends Component {
               style={{ height: "40px", borderRadius: "20px" }}
             />
           </Link>
+          <button onClick={this._logout}>Log out</button>
+
         </div>
+        */
       );
     }
   }

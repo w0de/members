@@ -11,7 +11,7 @@ html {
 .App-header {
   background-color: #e24e54;
   padding: 20px;
-  color: white;
+  color: white; 
   display: flex;
   height: 100px;
   flex-direction: row;
@@ -21,7 +21,6 @@ html {
 .app-icon {
   align-items: center;
   flex-basis: 10%;
-  border: 1px solid black;
 }
 
 .app-search {
@@ -225,3 +224,7 @@ stupid inline style*/
 .nav-link {
   color:white;
 }
+
+.loggedin {
+}
+
